@@ -1,20 +1,22 @@
 <?php
 /**
  * BruteForce
- * prevent user to send to meny requests to server
+ * prevent user to send too many requests to server
  *
  * PHP version 5
  *
  * @author Nikolay Dyakov < nikolay@codific.eu >
+ * @author Aram Hovsepyan < aram@codific.eu >
  * @link   https://codific.eu
  */
 namespace Codific;
 
 /**
  * BruteForce
- * prevent user to send to meny requests to server
+ * prevent user to send too many requests to server
  *
  * @author Nikolay Dyakov < nikolay@codific.eu >
+ * @author Aram Hovsepyan < aram@codific.eu >
  * @link   https://codific.eu
  */
 class BruteForce
@@ -25,7 +27,7 @@ class BruteForce
      * @var int
      */
     private static $timeFrame = 10;
-    
+
     /**
      * Threshold values
      * Example: for 5 failed logins user will be not allowed to login for next 60 seconds.
@@ -36,7 +38,7 @@ class BruteForce
             10 => 120,
             20 => 240,
     );
-    
+
     /**
      * database configuration
      * Example:
@@ -49,7 +51,7 @@ class BruteForce
      * @var array
      */
     private static $databaseConfig = array();
-    
+
     /**
      * Init database connection
      * @return \PDO
@@ -73,7 +75,7 @@ class BruteForce
         $db->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         return $db;
     }
-    
+
     /**
      * Return user ip address
      * @return string
@@ -97,10 +99,10 @@ class BruteForce
             $ipaddress = 'UNKNOWN';
         return $ipaddress;
     }
-    
+
     /**
-     * Add failed login record to database.
-     * @param string $username Username.
+     * Add failed login record to the database.
+     * @param string $username the username to add (for accounting reasons)
      * @return void
      */
     public static function addFailedLogin($username)
@@ -112,12 +114,13 @@ class BruteForce
                 ':ip'=>self::getIP(),
         ));
     }
-    
+
     /**
      * Get login delay in seconds
+     * This function returns a 0 if the login can proceed, or returns a positive integer if the login should be delayed by X seconds
      * @return integer
      */
-    public static function getLoginDelay() 
+    public static function getLoginDelay()
     {
         // Get db connection
         $db = self::_db();
@@ -132,12 +135,12 @@ class BruteForce
         $failedAttempts = $row['count'];
         // Get timestamp of last failed login
         $lastFailedTimestamp = strtotime($row['lastDate']);
-        
+
         krsort(self::$threshold);
         foreach (self::$threshold as $attempts => $delay)
             if ($failedAttempts > $attempts && time() < ($lastFailedTimestamp+$delay))
                     return ($lastFailedTimestamp+$delay) - time();
-        
+
         return 0;
     }
 }
