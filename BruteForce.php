@@ -5,8 +5,8 @@
  *
  * PHP version 5
  *
- * @author Nikolay Dyakov < nikolay@codific.eu >
  * @author Aram Hovsepyan < aram@codific.eu >
+ * @author Nikolay Dyakov < nikolay@codific.eu >
  * @link   https://codific.eu
  */
 namespace Codific;
@@ -15,8 +15,8 @@ namespace Codific;
  * BruteForce
  * prevent user to send too many requests to server
  *
- * @author Nikolay Dyakov < nikolay@codific.eu >
  * @author Aram Hovsepyan < aram@codific.eu >
+ * @author Nikolay Dyakov < nikolay@codific.eu >
  * @link   https://codific.eu
  */
 class BruteForce
@@ -44,6 +44,7 @@ class BruteForce
      * Example:
      * $databaseConfig = array(
      *       'host' => 'localhost',
+     *       'port' => 3307,
      *       'dbname' => 'database name',
      *       'username' => 'username',
      *       'password' => 'password',
@@ -61,7 +62,7 @@ class BruteForce
         $db = null;
         if(sizeof(self::$databaseConfig)>0)
             $db = new \PDO(
-                    "mysql:host=".self::$databaseConfig['host'].";dbname=".self::$databaseConfig['dbname'],
+                    "mysql:host=".self::$databaseConfig['host'].";port=".self::$databaseConfig['port'].";dbname=".self::$databaseConfig['dbname'],
                     self::$databaseConfig['username'],
                     self::$databaseConfig['password']
             );
