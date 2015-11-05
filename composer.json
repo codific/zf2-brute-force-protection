@@ -5,6 +5,12 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "Aram Hovsepyan",
+            "email": "aram@codific.eu",
+            "homepage": "http://codific.eu",
+            "role": "Developer"
+        }
+        {
             "name": "Nikolay Dyakov",
             "email": "nikolay@codific.eu",
             "homepage": "http://codific.eu",
