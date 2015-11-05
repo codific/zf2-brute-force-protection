@@ -34,7 +34,7 @@ In the LoginController (or whatever controller is responsible for the login busi
       $this->cache->error = "Too Many Requests. Please wait $delay seconds before next try.";
       return $this->redirect()->toUrl("/admin/login/index");
   }
-```  
+```
 
 2. If the login with the provided authentication credentials fails, then add the failed attempt via the following code: 
 ```php
