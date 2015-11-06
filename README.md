@@ -50,6 +50,7 @@ You can also return HTTP code 429 that is probably a more systematic solution:
   {
       return $this->getResponse()->setStatusCode(429);
   }
+```
 
 2. If the login with the provided authentication credentials fails, then add the failed attempt via the following code: 
 ```php
