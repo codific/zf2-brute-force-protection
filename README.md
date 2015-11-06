@@ -34,7 +34,9 @@ $databaseConfig = array(
 
 # Usage
 In the LoginController (or whatever controller is responsible for the login business logic):
-1. Before actually running the provided authentication credentials use the following code (or alike) to check whether there are too many requests:
+
+## Before running the authentication
+Before actually running the provided authentication credentials use the following code (or alike) to check whether there are too many requests:
 ```php
   $delay = \Codific\BruteForce::getLoginDelay();
   if($delay > 0)
@@ -52,7 +54,8 @@ You can also return HTTP code 429 that is probably a more systematic solution:
   }
 ```
 
-2. If the login with the provided authentication credentials fails, then add the failed attempt via the following code: 
+## If the login fails
+If the login with the provided authentication credentials fails, then add the failed attempt via the following code: 
 ```php
   \Codific\BruteForce::addFailedLogin($username);
 ```
