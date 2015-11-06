@@ -106,8 +106,10 @@ class BruteForce
      * @param string $username the username to add (for accounting reasons)
      * @return void
      */
-    public static function addFailedLogin($username)
+    public static function addFailedLogin($username="")
     {
+        if(!$username)
+            $username = "anonymous";
         $db = self::_db();
         $stmt = $db->prepare("INSERT INTO user_failed_login(`username`,`ip`, `timestamp`) VALUES(:username,:ip, NOW())");
         $stmt->execute(array(
