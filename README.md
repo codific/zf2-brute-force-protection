@@ -8,6 +8,10 @@ Inspired by the Angular JS implementation, https://www.npmjs.com/package/express
 
 MIT License http://opensource.org/licenses/MIT.
 
+# Specification
+All failed attempts are stored in a database table. The brute force protection works based on an IP. A predefined threshold configuration dictates the delay after a certain number of failed attempts. After a certain period (e.g., 10min) the failed attempts expire. 
+Targetted denial of service attacks are still possible to a certain extent if the attacker has the same IP address as a legitimate user.
+
 # Installation
 Add the plugin to your composer.json by using the following line:
 ```json
