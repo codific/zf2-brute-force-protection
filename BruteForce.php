@@ -121,18 +121,35 @@ class BruteForce
     /**
      * Get login delay in seconds
      * This function returns a 0 if the login can proceed, or returns a positive integer if the login should be delayed by X seconds
+     * @param String $filter use IP(Default) or USERNAME or BOTH to choice how to check for login delay
+     * @param String $username if you choice USERNAME or BOTH for filter you must supply user name here
      * @return integer
      */
-    public static function getLoginDelay()
+    public static function getLoginDelay($filter = 'IP', $username="")
     {
         // Get db connection
         $db = self::_db();
         // Get number of failed attempts and timestap for last failed attempt
-        $stmt = $db->prepare("SELECT COUNT(id) as `count`, MAX(timestamp) as `lastDate` FROM user_failed_login WHERE ip = :ip AND timestamp > DATE_SUB(NOW(), INTERVAL :timeframe MINUTE)");
-        $stmt->execute(array(
-                ':ip'=>self::getIP(),
-                ':timeframe'=>self::$timeFrame,
-        ));
+        $where = "";
+        $params = array(':timeframe'=>self::$timeFrame);
+        if(strtoupper($filter) == 'IP')
+        {
+            $where = "ip = :ip";
+            $params[':ip'] = self::getIP();
+        }
+        if(strtoupper($filter) == 'USERNAME')
+        {
+            $where = "username = :username";
+            $params[':username'] = $username;
+        }
+        if(strtoupper($filter) == 'BOTH')
+        {
+            $where = "ip = :ip AND username = :username";
+            $params[':ip'] = self::getIP();
+            $params[':username'] = $username;
+        }
+        $stmt = $db->prepare("SELECT COUNT(id) as `count`, MAX(timestamp) as `lastDate` FROM user_failed_login WHERE $where AND timestamp > DATE_SUB(NOW(), INTERVAL :timeframe MINUTE)");
+        $stmt->execute($params);
         $row = $stmt->fetch();
         // Get count of last failed logins
         $failedAttempts = $row['count'];
