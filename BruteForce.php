@@ -119,6 +119,23 @@ class BruteForce
     }
 
     /**
+     * Remove failed login record from the database.
+     * @param string $username the username to remove (for accounting reasons)
+     * @return void
+     */    
+    public static function resetFailedLogin($username="")
+    {
+        if(!$username)
+            $username = "anonymous";
+        $db = self::_db();
+        $stmt = $db->prepare("DELETE FROM user_failed_login WHERE `username` = :username AND `ip` = :ip");
+        $stmt->execute(array(
+                ':username'=>$username,
+                ':ip'=>self::getIP(),
+        ));
+    }     
+    
+    /**
      * Get login delay in seconds
      * This function returns a 0 if the login can proceed, or returns a positive integer if the login should be delayed by X seconds
      * @param String $filter use IP(Default) or USERNAME or BOTH to choice how to check for login delay
